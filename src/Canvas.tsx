@@ -1,12 +1,10 @@
 import { useState, useRef, MouseEvent } from 'react'
 import './Canvas.css'
-import Path from './Path'
-import { PathShape, Shape } from './shapes'
+import { PathShape, Shape, ShapeName, shapesToComponents } from './shapes'
 
 function Canvas() {
   const canvasRef = useRef<HTMLDivElement>(null)
 
-  // @todo make this an array of shapes
   const [shapes, setShapes] = useState([new PathShape])
 
   function handleClick(event: MouseEvent) {
@@ -24,6 +22,21 @@ function Canvas() {
     setShapes(newShapes)
   }
 
+  const shapeComponents = shapes.map((shape, index) => {
+    const shapeName = (shape.constructor.name as ShapeName)
+  
+    const ShapeComponent = shapesToComponents.get(shapeName);
+
+    return ShapeComponent !== undefined 
+      ? (
+        <ShapeComponent
+          key={`shape-${index}`}
+          shape={shape}
+        />
+      )
+      : null
+  })
+
   return (
     <div
       ref={canvasRef}
@@ -35,11 +48,7 @@ function Canvas() {
         width="100" height="100"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {
-          shapes.map((shape, index) => (
-            <Path key={`shape-${index}`} shape={shape} />
-          ))
-        }
+        {shapeComponents}
       </svg>
 
       {/* @todo add SVG markup as printout. */}
