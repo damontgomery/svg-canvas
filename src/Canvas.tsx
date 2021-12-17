@@ -1,40 +1,31 @@
-import { useState, MouseEvent } from 'react'
+import { useState, useRef, MouseEvent } from 'react'
 import './Canvas.css'
 import Path from './Path'
-import { Shape } from './shapes'
+import { PathShape, Shape } from './shapes'
 
 function Canvas() {
+  const canvasRef = useRef<HTMLDivElement>(null)
+
   // @todo make this an array of shapes
-  const [shape, setShape] = useState({
-    coordinates: [
-      {x: 100, y: 100},
-      {x: 200, y: 500},
-    ]
-  } as Shape)
+  const [shape, setShape] = useState(new PathShape)
 
-  // @todo fix TS.
   function handleClick(event: MouseEvent) {
-    console.log(event)
-
-    // @todo offset by position of canvas.
-
     let newShape = {
       ...shape,
     }
-    
-    newShape.coordinates.push({
-      x: event.pageX,
-      y: event.pageY
-    })
 
-    console.log(shape, newShape)
+    newShape.coordinates.push({
+      x: event.pageX - (canvasRef.current?.offsetLeft ?? 0),
+      y: event.pageY - (canvasRef.current?.offsetTop ?? 0),
+    })
 
     setShape(newShape)
   }
 
   return (
     <div
-      className="Canvas"
+      ref={canvasRef}
+      className="canvas"
       onClick={handleClick}
     >
       <svg
@@ -46,6 +37,8 @@ function Canvas() {
           shape={shape}
         />
       </svg>
+
+      {/* @todo add SVG markup as printout. */}
     </div>
   )
 }

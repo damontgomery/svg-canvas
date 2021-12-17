@@ -11,18 +11,3 @@ export interface Coordinate {
   x: number,
   y: number,
 }
-
-export class Shape {
-  stroke: Color | undefined
-  fill: Color | undefined
-  coordinates: Coordinate[] = []
-}
-
-// export interface ShapeData {
-//   stroke?: Color,
-//   fill?: Color,
-//   coordinates: Coordinate[],
-// }
-
-export class PathShape extends Shape {
-}

@@ -1,16 +1,15 @@
-import { PathShape } from './types/interfaces'
+import { PathShape } from './shapes'
 import { rgba } from './utilities/color'
 
-function Path(props: {shape: Path}) {
-  const d = `M ${
-    props.shape.coordinates
+function Path(props: { shape: PathShape }) {
+  const d = `M ${props.shape.coordinates
       .map(coordinate => `${coordinate.x} ${coordinate.y}`)
       .join(' L')
-  }`
+    }`
 
   return (
     <path
-      className="Path"
+      className="path"
       d={d}
       stroke={rgba(props.shape.stroke)}
       fill="none"
