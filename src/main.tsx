@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Canvas from './Canvas'
+import App from './App'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Canvas />
+    <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('svg-canvas')
 )

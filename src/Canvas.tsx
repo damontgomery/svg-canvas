@@ -1,42 +1,22 @@
-import { useState, useRef, MouseEvent } from 'react'
+import { useRef, MouseEvent } from 'react'
 import './Canvas.css'
-import { PathShape, Shape, ShapeName, shapesToComponents } from './shapes'
+import { Coordinate } from './interfaces'
+import {Shape, ShapeName, shapesToComponents } from './shapes'
 
-function Canvas() {
+function Canvas(props: {
+  shapes: Shape[],
+  addCoordinateToShape: (coordinate: Coordinate) => void,
+}) {
   const canvasRef = useRef<HTMLDivElement>(null)
 
-  const defaultShape = new PathShape;
-  // Random color for fun.
-
-  function randomColor() {
-    return Math.round(Math.random() * 255)
-  }
-
-  defaultShape.stroke = {
-    red: randomColor(),
-    green: randomColor(),
-    blue: randomColor(),
-    opacity: 1,
-  }
-
-  const [shapes, setShapes] = useState([defaultShape])
-
   function handleClick(event: MouseEvent) {
-    let newShapes = Array.from(shapes)
-
-    const shapeIndex = newShapes.length - 1
-    const shape = newShapes[shapeIndex] ?? new Shape
-
-    shape.coordinates.push({
+    props.addCoordinateToShape({
       x: event.pageX - (canvasRef.current?.offsetLeft ?? 0),
       y: event.pageY - (canvasRef.current?.offsetTop ?? 0),
     })
-
-    newShapes[shapeIndex] = shape
-    setShapes(newShapes)
   }
 
-  const shapeComponents = shapes.map((shape, index) => {
+  const shapeComponents = props.shapes.map((shape, index) => {
     const shapeName = (shape.constructor.name as ShapeName)
 
     const ShapeComponent = shapesToComponents.get(shapeName);
@@ -54,7 +34,7 @@ function Canvas() {
   return (
     <div
       ref={canvasRef}
-      className="canvas"
+      className="Canvas"
       onClick={handleClick}
     >
       <svg
@@ -64,8 +44,6 @@ function Canvas() {
       >
         {shapeComponents}
       </svg>
-
-      {/* @todo add SVG markup as printout. */}
     </div>
   )
 }

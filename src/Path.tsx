@@ -13,7 +13,7 @@ function Path(props: { shape: PathShape }) {
 
   return (
     <path
-      className="path"
+      className="Path"
       d={d}
       stroke={rgba(props.shape.stroke)}
       fill={rgba(props.shape.fill)}
