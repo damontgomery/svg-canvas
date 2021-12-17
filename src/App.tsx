@@ -1,21 +1,16 @@
 import { useState } from 'react'
 import './App.css'
 import Canvas from './Canvas';
-import { Coordinate } from './interfaces';
-import { PathShape, Shape } from './shapes'
+import { Shape, Coordinate, PathShape } from './shapes'
+import { getRandomColor } from './color'
 
 function App() {
   const defaultShape = new PathShape;
-  // Random color for fun.
-
-  function randomColor() {
-    return Math.round(Math.random() * 255)
-  }
 
   defaultShape.stroke = {
-    red: randomColor(),
-    green: randomColor(),
-    blue: randomColor(),
+    red: getRandomColor(),
+    green: getRandomColor(),
+    blue: getRandomColor(),
     opacity: 1,
   }
 

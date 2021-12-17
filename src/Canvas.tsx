@@ -1,7 +1,6 @@
 import { useRef, MouseEvent } from 'react'
 import './Canvas.css'
-import { Coordinate } from './interfaces'
-import {Shape, ShapeName, shapesToComponents } from './shapes'
+import { Shape, getComponentsFromShapes, Coordinate } from './shapes'
 
 function Canvas(props: {
   shapes: Shape[],
@@ -16,20 +15,7 @@ function Canvas(props: {
     })
   }
 
-  const shapeComponents = props.shapes.map((shape, index) => {
-    const shapeName = (shape.constructor.name as ShapeName)
-
-    const ShapeComponent = shapesToComponents.get(shapeName);
-
-    return ShapeComponent !== undefined
-      ? (
-        <ShapeComponent
-          key={`shape-${index}`}
-          shape={shape}
-        />
-      )
-      : null
-  })
+  const shapeComponents = getComponentsFromShapes(props.shapes)
 
   return (
     <div

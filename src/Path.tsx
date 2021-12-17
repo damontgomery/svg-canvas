@@ -1,5 +1,5 @@
 import { PathShape } from './shapes'
-import { rgba } from './utilities/color'
+import { getRgba } from './color'
 
 // See https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths for a guide on what `path` should look like.
 
@@ -15,8 +15,8 @@ function Path(props: { shape: PathShape }) {
     <path
       className="Path"
       d={d}
-      stroke={rgba(props.shape.stroke)}
-      fill={rgba(props.shape.fill)}
+      stroke={getRgba(props.shape.stroke)}
+      fill={getRgba(props.shape.fill)}
     />
   )
 }
