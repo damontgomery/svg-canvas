@@ -2,17 +2,19 @@ import { PathShape } from './shapes'
 import { rgba } from './utilities/color'
 
 function Path(props: { shape: PathShape }) {
-  const d = `M ${props.shape.coordinates
+  const d = props.shape.coordinates.length > 0
+    ? `M ${props.shape.coordinates
       .map(coordinate => `${coordinate.x} ${coordinate.y}`)
       .join(' L')
     }`
+    : 'M 0 0'
 
   return (
     <path
       className="path"
       d={d}
       stroke={rgba(props.shape.stroke)}
-      fill="none"
+      fill={rgba(props.shape.fill)}
     />
   )
 }
