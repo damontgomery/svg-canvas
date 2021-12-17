@@ -7,19 +7,21 @@ function Canvas() {
   const canvasRef = useRef<HTMLDivElement>(null)
 
   // @todo make this an array of shapes
-  const [shape, setShape] = useState(new PathShape)
+  const [shapes, setShapes] = useState([new PathShape])
 
   function handleClick(event: MouseEvent) {
-    let newShape = {
-      ...shape,
-    }
+    let newShapes = Array.from(shapes)
 
-    newShape.coordinates.push({
+    const shapeIndex = newShapes.length - 1
+    const shape = newShapes[shapeIndex] ?? new Shape
+
+    shape.coordinates.push({
       x: event.pageX - (canvasRef.current?.offsetLeft ?? 0),
       y: event.pageY - (canvasRef.current?.offsetTop ?? 0),
     })
 
-    setShape(newShape)
+    newShapes[shapeIndex] = shape
+    setShapes(newShapes)
   }
 
   return (
@@ -33,9 +35,11 @@ function Canvas() {
         width="100" height="100"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <Path
-          shape={shape}
-        />
+        {
+          shapes.map((shape, index) => (
+            <Path key={`shape-${index}`} shape={shape} />
+          ))
+        }
       </svg>
 
       {/* @todo add SVG markup as printout. */}
