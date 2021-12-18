@@ -3,6 +3,7 @@ import './App.css'
 import Canvas from './Canvas';
 import { Shape, Coordinate, PathShape } from './shapes'
 import { getRandomColor } from './color'
+import SvgMarkup from './SvgMarkup';
 
 function App() {
   const defaultShape = new PathShape;
@@ -35,7 +36,12 @@ function App() {
         shapes={shapes}
         addCoordinateToShape={addCoordinateToShape}
       />
-      {/* @todo add SVG markup as printout. */}
+      <div className="Help">
+        <p>Click to draw.</p>
+      </div>
+      <SvgMarkup
+        shapes={shapes}
+      />
     </div>
   )
 }
