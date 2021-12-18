@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, KeyboardEvent } from 'react'
 import './App.css'
 import Canvas from './Canvas';
 import { Shape, Coordinate, PathShape } from './shapes'
@@ -6,16 +6,20 @@ import { getRandomColor } from './color'
 import SvgMarkup from './SvgMarkup';
 
 function App() {
-  const defaultShape = new PathShape;
+  function getNewPathShape() {
+    const shape = new PathShape;
 
-  defaultShape.stroke = {
-    red: getRandomColor(),
-    green: getRandomColor(),
-    blue: getRandomColor(),
-    opacity: 1,
+    shape.stroke = {
+      red: getRandomColor(),
+      green: getRandomColor(),
+      blue: getRandomColor(),
+      opacity: 1,
+    }
+
+    return shape
   }
 
-  const [shapes, setShapes] = useState([defaultShape])
+  const [shapes, setShapes] = useState([getNewPathShape()])
 
   function addCoordinateToShape(coordinate: Coordinate) {
     let newShapes = Array.from(shapes)
@@ -30,14 +34,41 @@ function App() {
     setShapes(newShapes)
   }
 
+  function handleKeyDown(event: KeyboardEvent) {
+    switch (event.key) {
+      case 'r':
+        reset()
+        break;
+      case 'l':
+        newLine()
+        break;
+    }
+  }
+
+  function reset() {
+    setShapes([getNewPathShape()])
+  }
+
+  function newLine() {
+    let newShapes = Array.from(shapes)
+
+    newShapes.push(getNewPathShape())
+
+    setShapes(newShapes)
+  }
+
   return (
-    <div className="App">
+    <div
+      className="App"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
       <Canvas
         shapes={shapes}
         addCoordinateToShape={addCoordinateToShape}
       />
       <div className="Help">
-        <p>Click to draw.</p>
+        <p>Click to draw. 'R' to reset. 'L' to start a new line.</p>
       </div>
       <SvgMarkup
         shapes={shapes}
