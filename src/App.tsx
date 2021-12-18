@@ -9,12 +9,7 @@ function App() {
   function getNewPathShape() {
     const shape = new PathShape;
 
-    shape.stroke = {
-      red: getRandomColor(),
-      green: getRandomColor(),
-      blue: getRandomColor(),
-      opacity: 1,
-    }
+    shape.stroke = getRandomColor()
 
     return shape
   }
