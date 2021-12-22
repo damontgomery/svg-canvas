@@ -17,16 +17,11 @@ function App() {
   const [shapes, setShapes] = useState([getNewPathShape()])
 
   function addCoordinateToShape(coordinate: Coordinate) {
-    let newShapes = Array.from(shapes)
-
-    const shapeIndex = newShapes.length - 1
-    const shape = newShapes[shapeIndex] ?? new Shape
-
+    const shape = shapes[shapes.length - 1] ?? new Shape
+    
     shape.coordinates.push(coordinate)
-
-    newShapes[shapeIndex] = shape
-
-    setShapes(newShapes)
+    
+    setShapes([...shapes.slice(0, -1), shape])
   }
 
   function handleKeyDown(event: KeyboardEvent) {
@@ -45,11 +40,7 @@ function App() {
   }
 
   function newLine() {
-    let newShapes = Array.from(shapes)
-
-    newShapes.push(getNewPathShape())
-
-    setShapes(newShapes)
+    setShapes([...shapes, getNewPathShape()])
   }
 
   return (
