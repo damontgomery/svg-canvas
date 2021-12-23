@@ -1,9 +1,9 @@
-import { useRef, MouseEvent, ReactElement } from 'react'
+import { useRef, MouseEvent, ReactElement, ComponentType } from 'react'
 import './Canvas.css'
 import { Coordinate } from './shapes'
 
 export default function Canvas(props: {
-  shapes: ReactElement[],
+  shapes: ComponentType<any>[],
   addCoordinateToShape: (coordinate: Coordinate) => void
 }) {
   const canvasRef = useRef<HTMLDivElement>(null)
@@ -26,7 +26,7 @@ export default function Canvas(props: {
         width="100%" height="100%"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {props.shapes}
+        {props.shapes.map((S,i) => <S key={i}/>)}
       </svg>
     </div>
   )
