@@ -23,19 +23,19 @@ export default function App() {
   }
 
   function addCoordinateToShape(coordinate: Coordinate) {
-    // @todo create a new shape component without defaulting to Path.
     const shape = shapes[shapes.length - 1] ?? getNewShape()
 
-    const newShape = cloneElement(shape, {
-      coordinates: [...shape.props.coordinates ?? [], coordinate]
-    })
-    
-    setShapes([...shapes.slice(0, -1), newShape])
+    setShapes([
+      ...shapes.slice(0, -1),
+      cloneElement(shape, {
+        coordinates: [...shape.props.coordinates ?? [], coordinate]
+      })
+    ])
   }
 
   function handleKeyDown(event: KeyboardEvent) {
     // @todo add ability to change shape type.
-    
+
     switch (event.key) {
       case 'r':
         reset()
