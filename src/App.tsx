@@ -9,22 +9,22 @@ import Path from './Path';
 export default function App() {
   const [shapes, setShapes] = useState([] as ReactElement[])
 
-  function getNewPath() {
-    return (
-      <Path
-        key={`shape-${shapes.length}`}
-        stroke={getRandomColor()}
-      />
-    )
+  const [selectedShape, setSelectedShape] = useState((<Path />))
+
+  function getNewShape() {
+    return cloneElement(selectedShape, {
+      key: `shape-${shapes.length}`,
+      stroke: getRandomColor(),
+    })
   }
 
   if (shapes.length === 0) {
-    setShapes([getNewPath()])
+    setShapes([getNewShape()])
   }
 
   function addCoordinateToShape(coordinate: Coordinate) {
     // @todo create a new shape component without defaulting to Path.
-    const shape = shapes[shapes.length - 1] ?? getNewPath()
+    const shape = shapes[shapes.length - 1] ?? getNewShape()
 
     const newShape = cloneElement(shape, {
       coordinates: [...shape.props.coordinates ?? [], coordinate]
@@ -34,6 +34,8 @@ export default function App() {
   }
 
   function handleKeyDown(event: KeyboardEvent) {
+    // @todo add ability to change shape type.
+    
     switch (event.key) {
       case 'r':
         reset()
@@ -49,7 +51,7 @@ export default function App() {
   }
 
   function newLine() {
-    setShapes([...shapes, getNewPath()])
+    setShapes([...shapes, getNewShape()])
   }
 
   return (
