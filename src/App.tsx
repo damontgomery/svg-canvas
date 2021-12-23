@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent, cloneElement } from 'react'
+import { useState, KeyboardEvent, cloneElement, ReactElement } from 'react'
 import './App.css'
 import Canvas from './Canvas';
 import { Coordinate } from './shapes'
@@ -7,15 +7,20 @@ import SvgMarkup from './SvgMarkup';
 import Path from './Path';
 
 export default function App() {
+  const [shapes, setShapes] = useState([] as ReactElement[])
+
   function getNewPath() {
     return (
       <Path
+        key={`shape-${shapes.length}`}
         stroke={getRandomColor()}
       />
     )
   }
 
-  const [shapes, setShapes] = useState([getNewPath()])
+  if (shapes.length === 0) {
+    setShapes([getNewPath()])
+  }
 
   function addCoordinateToShape(coordinate: Coordinate) {
     // @todo create a new shape component without defaulting to Path.
@@ -40,7 +45,7 @@ export default function App() {
   }
 
   function reset() {
-    setShapes([getNewPath()])
+    setShapes([])
   }
 
   function newLine() {
