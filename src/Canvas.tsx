@@ -1,10 +1,10 @@
-import { useRef, MouseEvent } from 'react'
+import { useRef, MouseEvent, ReactElement } from 'react'
 import './Canvas.css'
-import { Shape, getComponentsFromShapes, Coordinate } from './shapes'
+import { Coordinate } from './shapes'
 
-function Canvas(props: {
-  shapes: Shape[],
-  addCoordinateToShape: (coordinate: Coordinate) => void,
+export default function Canvas(props: {
+  shapes: ReactElement[],
+  addCoordinateToShape: (coordinate: Coordinate) => void
 }) {
   const canvasRef = useRef<HTMLDivElement>(null)
 
@@ -14,8 +14,6 @@ function Canvas(props: {
       y: event.pageY - (canvasRef.current?.offsetTop ?? 0),
     })
   }
-
-  const shapeComponents = getComponentsFromShapes(props.shapes)
 
   return (
     <div
@@ -28,10 +26,8 @@ function Canvas(props: {
         width="100%" height="100%"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {shapeComponents}
+        {props.shapes}
       </svg>
     </div>
   )
 }
-
-export default Canvas

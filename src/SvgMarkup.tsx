@@ -1,17 +1,15 @@
 import './SvgMarkup.css'
-import {getComponentsFromShapes, Shape } from './shapes'
 import { renderToString } from 'react-dom/server'
+import { ReactElement } from 'react'
 
-function SvgMarkup(props: { shapes: Shape[] }) {
-  const shapeComponents = getComponentsFromShapes(props.shapes)
-
+export default function SvgMarkup(props: { shapes: ReactElement[], }) {
   const markup = renderToString(
       <svg
         version="1.1"
         width="100%" height="100%"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {shapeComponents}
+        {props.shapes}
       </svg>
   )
 
@@ -21,5 +19,3 @@ function SvgMarkup(props: { shapes: Shape[] }) {
     </code>
   )
 }
-
-export default SvgMarkup

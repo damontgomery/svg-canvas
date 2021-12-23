@@ -1,27 +1,31 @@
-import { useState, KeyboardEvent } from 'react'
+import { useState, KeyboardEvent, cloneElement } from 'react'
 import './App.css'
 import Canvas from './Canvas';
-import { Shape, Coordinate, PathShape } from './shapes'
+import { Coordinate } from './shapes'
 import { getRandomColor } from './color'
 import SvgMarkup from './SvgMarkup';
+import Path from './Path';
 
-function App() {
-  function getNewPathShape() {
-    const shape = new PathShape;
-
-    shape.stroke = getRandomColor()
-
-    return shape
+export default function App() {
+  function getNewPath() {
+    return (
+      <Path
+        stroke={getRandomColor()}
+      />
+    )
   }
 
-  const [shapes, setShapes] = useState([getNewPathShape()])
+  const [shapes, setShapes] = useState([getNewPath()])
 
   function addCoordinateToShape(coordinate: Coordinate) {
-    const shape = shapes[shapes.length - 1] ?? new Shape
+    // @todo create a new shape component without defaulting to Path.
+    const shape = shapes[shapes.length - 1] ?? getNewPath()
+
+    const newShape = cloneElement(shape, {
+      coordinates: [...shape.props.coordinates ?? [], coordinate]
+    })
     
-    shape.coordinates.push(coordinate)
-    
-    setShapes([...shapes.slice(0, -1), shape])
+    setShapes([...shapes.slice(0, -1), newShape])
   }
 
   function handleKeyDown(event: KeyboardEvent) {
@@ -36,11 +40,11 @@ function App() {
   }
 
   function reset() {
-    setShapes([getNewPathShape()])
+    setShapes([getNewPath()])
   }
 
   function newLine() {
-    setShapes([...shapes, getNewPathShape()])
+    setShapes([...shapes, getNewPath()])
   }
 
   return (
@@ -62,5 +66,3 @@ function App() {
     </div>
   )
 }
-
-export default App
