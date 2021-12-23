@@ -5,21 +5,29 @@ import { Coordinate } from './shapes'
 import { getRandomColor } from './color'
 import SvgMarkup from './SvgMarkup';
 import Path from './Path';
+import Polygon from './Polygon';
 
 export default function App() {
   const [shapes, setShapes] = useState([] as ReactElement[])
 
   const [selectedShape, setSelectedShape] = useState((<Path />))
 
-  function getNewShape() {
-    return cloneElement(selectedShape, {
+  // We want to accept a shape as a variable in case we are in the middle up updating the component state and we don't have an updated selectedShape.
+  function getNewShape(shape = selectedShape) {
+    return cloneElement(shape, {
       key: `shape-${shapes.length}`,
       stroke: getRandomColor(),
     })
   }
 
+  function startNewShape(shape = selectedShape) {
+    setSelectedShape(shape)
+
+    setShapes([...shapes, getNewShape(shape)])
+  }
+
   if (shapes.length === 0) {
-    setShapes([getNewShape()])
+    startNewShape()
   }
 
   function addCoordinateToShape(coordinate: Coordinate) {
@@ -33,25 +41,19 @@ export default function App() {
     ])
   }
 
+  // @todo split this out?
   function handleKeyDown(event: KeyboardEvent) {
-    // @todo add ability to change shape type.
-
     switch (event.key) {
       case 'r':
-        reset()
+        setShapes([])
         break;
       case 'l':
-        newLine()
+        startNewShape((<Path />))
+        break;
+      case 'p':
+        startNewShape((<Polygon />))
         break;
     }
-  }
-
-  function reset() {
-    setShapes([])
-  }
-
-  function newLine() {
-    setShapes([...shapes, getNewShape()])
   }
 
   return (
@@ -65,7 +67,7 @@ export default function App() {
         addCoordinateToShape={addCoordinateToShape}
       />
       <div className="Help">
-        <p>Click to draw. 'R' to reset. 'L' to start a new line.</p>
+        <p>Click to draw. 'R' to reset. 'L' to start a new line. 'P' to start a new polygon.</p>
       </div>
       <SvgMarkup
         shapes={shapes}
